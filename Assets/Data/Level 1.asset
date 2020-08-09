@@ -13,10 +13,14 @@ MonoBehaviour:
   m_Name: Level 1
   m_EditorClassIdentifier: 
   LevelBackground: {fileID: 21300000, guid: cfda85b6bac60044aa300379d4b89e68, type: 3}
-  LevelState: 0
+  LevelState: 1
   BackgroundMusic: {fileID: 8300000, guid: 816b6eab58d24c646a55f35fb63b0f1f, type: 3}
-  AsteroidsPrefs:
-  - {fileID: 4329056946036709611, guid: 1ec36e81a90af924094df5393f8418cb, type: 3}
-  - {fileID: 660738726896937751, guid: f2ed0e3357a2d0742932de1085265602, type: 3}
+  PlayerPrefab: {fileID: 8896162970220074555, guid: 2b15c07f51fff4d4288abc085e464445,
+    type: 3}
+  WinScore: 10
+  AsteroidsPrefabs:
   - {fileID: 2084493992995115857, guid: ab12931d454c3e245963f5918136df65, type: 3}
-  WinScore: 15
+  - {fileID: 849548077772205491, guid: a853c5a5af6ea364eaf3a8842e8fab37, type: 3}
+  - {fileID: 1251700363608970177, guid: 837a5bee23135f545a0aa3608ecfd2bd, type: 3}
+  AsteroidsMinMoveSpeed: 2
+  AsteroidsMaxMoveSpeed: 4

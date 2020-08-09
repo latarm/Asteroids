@@ -4766,7 +4766,8 @@ GameObject:
   - component: {fileID: 8896162970220074557}
   - component: {fileID: 8896162970220074556}
   - component: {fileID: 8896162970220074558}
-  - component: {fileID: 5136241206556901528}
+  - component: {fileID: -6743501774686706670}
+  - component: {fileID: -5161345688760184677}
   m_Layer: 0
   m_Name: PlayerShip
   m_TagString: Player
@@ -4801,17 +4802,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e60c5753dcf7ba46aef2ab13f48017f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MaxLife: 3
-  Lifes: 3
-  Ammo: 10
-  MaxAmmo: 10
-  Score: 0
-  _audioClips:
-  - {fileID: 8300000, guid: ffb159a21c8a04135a5616979c828fab, type: 3}
-  - {fileID: 8300000, guid: 7e26c9daf4c32483b9c2790e662d3f1b, type: 3}
-  Projectile: {fileID: 100000, guid: bfe0ba4acc768a5448d46a6c63d8106a, type: 3}
-  _moveSpeed: 3.5
-  _rotationSpeed: 0.75
+  ShipInformation: {fileID: 11400000, guid: 23ad7650051fc1c419b24f258eb82ab7, type: 2}
 --- !u!212 &8896162970220074557
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -4850,7 +4841,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 5
-  m_Sprite: {fileID: 21300000, guid: f7eb00cb3ec9bab45b85d561558c4250, type: 3}
+  m_Sprite: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -4858,7 +4849,7 @@ SpriteRenderer:
   m_Size: {x: 0.4, y: 0.7}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!70 &8896162970220074556
@@ -4898,7 +4889,7 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!82 &5136241206556901528
+--- !u!82 &-6743501774686706670
 AudioSource:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -4908,17 +4899,17 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: ffb159a21c8a04135a5616979c828fab, type: 3}
-  m_PlayOnAwake: 0
-  m_Volume: 0.5
+  m_audioClip: {fileID: 8300000, guid: 139982ee37a243d40aab3b2b96b2c253, type: 3}
+  m_PlayOnAwake: 1
+  m_Volume: 1
   m_Pitch: 1
-  Loop: 0
+  Loop: 1
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
   Priority: 128
   DopplerLevel: 1
-  MinDistance: 1.4107021
+  MinDistance: 1
   MaxDistance: 500
   Pan2D: 0
   rolloffMode: 0
@@ -4994,3 +4985,27 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &-5161345688760184677
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8896162970220074555}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 53258ad9ad6e71e48bb8643c9522112e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ExcludedPropertiesInInspector:
+  - m_Script
+  m_LockStageInInspector: 
+  m_StreamingVersion: 20170927
+  m_Priority: 10
+  m_StandbyUpdate: 2
+  m_LookAt: {fileID: 0}
+  m_Follow: {fileID: 0}
+  m_ShowDebugText: 0
+  m_Loop: 0
+  m_ChildCameras: []
+  m_Instructions: []

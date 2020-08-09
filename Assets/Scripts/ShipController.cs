@@ -1,20 +1,14 @@
 ﻿using UnityEngine;
 using System.Collections;
-using System.Collections.Generic;
 
 public class ShipController : MonoBehaviour
 {
     #region Fields
 
-    public int MaxLife;
-    public int Lifes;
-    public int Ammo;
-    public int MaxAmmo;
-    public int Score;
-    public AudioClip[] _audioClips;
-    public GameObject Projectile;
-    [SerializeField] private float _moveSpeed;
-    [SerializeField] private float _rotationSpeed;
+    public ShipData ShipInformation;
+
+    public GameController GameController;
+
     private float _horizontal, _vertical;
     private bool _shooting=false;
     private Coroutine _reloadRoutine;
@@ -24,17 +18,25 @@ public class ShipController : MonoBehaviour
 
     #region UnityMethods
 
-    private void Start()
+    public void Start()
     {
-        Score = 0;
+        gameObject.GetComponent<SpriteRenderer>().sprite = ShipInformation.ShipSprite;
+        ShipInformation.Lifes = 3;
+        ShipInformation.Score = 0;
         _audioSource = transform.GetComponent<AudioSource>();
     }
 
-    void Update()
+    public void Update()
     {
         Move();
         Shoot();
         Reload();
+
+        if (ShipInformation.Lifes > ShipInformation.MaxLife)
+            ShipInformation.Lifes = ShipInformation.MaxLife;
+
+        if (ShipInformation.Ammo > ShipInformation.MaxAmmo)
+            ShipInformation.Ammo = ShipInformation.MaxAmmo;
     }
 
     #endregion
@@ -57,9 +59,9 @@ public class ShipController : MonoBehaviour
 
     void Reload()
     {
-        if (!_shooting && _reloadRoutine == null && Ammo < MaxAmmo)
+        if (!_shooting && _reloadRoutine == null && ShipInformation.Ammo < ShipInformation.MaxAmmo)
             _reloadRoutine= StartCoroutine(ReloadCoroutine());
-        if(_reloadRoutine!=null && _shooting && Ammo!=0)
+        if(_reloadRoutine!=null && _shooting && ShipInformation.Ammo!=0)
         {
             StopCoroutine(_reloadRoutine);
             _reloadRoutine = null;
@@ -68,23 +70,25 @@ public class ShipController : MonoBehaviour
 
     IEnumerator ShootCoroutine()
     {
-        while (_shooting&&Ammo>0)
+        while (_shooting&&ShipInformation.Ammo>0)
         {
-            GameObject projectile = Instantiate(Projectile, transform.position, transform.rotation);
+            GameObject projectile = Instantiate(ShipInformation.Projectile, transform.position, transform.rotation);
             projectile.transform.parent = null;
             projectile.name = "Projectile";
-            _audioSource.PlayOneShot(_audioClips[0]);
-            Ammo--;
+            projectile.GetComponent<Projectile>().GameController = GameController;
+            projectile.GetComponent<Projectile>()._firing_ship = gameObject;
+            _audioSource.PlayOneShot(ShipInformation.AudioClips[0]);
+            ShipInformation.Ammo--;
             yield return new WaitForSeconds(0.2f);
         }
     }
 
     IEnumerator ReloadCoroutine()
     {
-        while (Ammo < MaxAmmo)
+        while (ShipInformation.Ammo < ShipInformation.MaxAmmo)
         {
             yield return new WaitForSeconds(0.3f);
-            Ammo++;
+            ShipInformation.Ammo++;
         }
         _reloadRoutine = null;
     }
@@ -97,19 +101,19 @@ public class ShipController : MonoBehaviour
         if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.D))
         {
             Vector3 normalizedVector = new Vector3(_horizontal, _vertical, 0).normalized;
-            transform.position += normalizedVector * _moveSpeed * Time.deltaTime;
+            transform.position += normalizedVector * ShipInformation.MoveSpeed * Time.deltaTime;
 
             float angle = Mathf.Atan2(normalizedVector.y, normalizedVector.x) * Mathf.Rad2Deg-90;
             Quaternion quaternion = Quaternion.AngleAxis(angle, Vector3.forward);
-            transform.rotation = Quaternion.Slerp(transform.rotation, quaternion, _rotationSpeed);            
+            transform.rotation = Quaternion.Slerp(transform.rotation, quaternion, ShipInformation.RotationSpeed);            
         }
     }
 
     public void GetDamage(int damage)
     {
-        Lifes -= damage;
-        _audioSource.PlayOneShot(_audioClips[1]);
-        if (Lifes == 0)
+        ShipInformation.Lifes -= damage;
+        _audioSource.PlayOneShot(ShipInformation.AudioClips[1]);
+        if (ShipInformation.Lifes == 0)
         {
             Destroy(gameObject);
         }

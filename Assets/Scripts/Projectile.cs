@@ -5,6 +5,8 @@ public class Projectile : MonoBehaviour
 {
     #region Fields
 
+    public GameController GameController;
+
     public GameObject shoot_effect;
 	public GameObject hit_effect;
     public GameObject _firing_ship;
@@ -17,7 +19,6 @@ public class Projectile : MonoBehaviour
 
     void Start ()
     {
-        _firing_ship = GameObject.FindGameObjectWithTag("Player");
         _shipController = _firing_ship.GetComponent<ShipController>();
 		GameObject obj = Instantiate(shoot_effect, transform.position  - new Vector3(0,0,5), Quaternion.identity); //Spawn muzzle flash
 		obj.transform.parent = _firing_ship.transform;
@@ -34,7 +35,7 @@ public class Projectile : MonoBehaviour
 		if (col.gameObject != _firing_ship && col.gameObject.tag != "Projectile")
         {
 			Instantiate(hit_effect, transform.position, Quaternion.identity);
-            _shipController.Score++;
+            GameController.LevelData.CurrentScore++;
 			Destroy(gameObject);
             Destroy(col.gameObject);
 		}
