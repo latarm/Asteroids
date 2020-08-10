@@ -54,7 +54,7 @@ public class AsteroidController : MonoBehaviour
         if (transform.childCount == 0)
             Destroy(gameObject);
 
-        if (_playerTransform != null && IsTargetFarThanDistance(_playerTransform.position, 10f))
+        if (_playerTransform != null && IsTargetFarThanDistance(_playerTransform.position, 20f))
             Destroy(gameObject);
 
         _childTransform.Rotate(0, 0, _rotationSpeed);

@@ -4767,7 +4767,6 @@ GameObject:
   - component: {fileID: 8896162970220074556}
   - component: {fileID: 8896162970220074558}
   - component: {fileID: -6743501774686706670}
-  - component: {fileID: -5161345688760184677}
   m_Layer: 0
   m_Name: PlayerShip
   m_TagString: Player
@@ -4803,6 +4802,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShipInformation: {fileID: 11400000, guid: 23ad7650051fc1c419b24f258eb82ab7, type: 2}
+  GameController: {fileID: 0}
+  Joystick: {fileID: 0}
 --- !u!212 &8896162970220074557
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -4985,27 +4986,3 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &-5161345688760184677
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8896162970220074555}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 53258ad9ad6e71e48bb8643c9522112e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_ExcludedPropertiesInInspector:
-  - m_Script
-  m_LockStageInInspector: 
-  m_StreamingVersion: 20170927
-  m_Priority: 10
-  m_StandbyUpdate: 2
-  m_LookAt: {fileID: 0}
-  m_Follow: {fileID: 0}
-  m_ShowDebugText: 0
-  m_Loop: 0
-  m_ChildCameras: []
-  m_Instructions: []

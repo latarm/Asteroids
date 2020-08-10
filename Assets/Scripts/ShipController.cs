@@ -9,10 +9,13 @@ public class ShipController : MonoBehaviour
 
     public GameController GameController;
 
+    public Joystick Joystick;
+
     private float _horizontal, _vertical;
     private bool _shooting=false;
     private Coroutine _reloadRoutine;
     private AudioSource _audioSource;
+    
 
     #endregion
 
@@ -45,17 +48,29 @@ public class ShipController : MonoBehaviour
 
     void Shoot()
     {
-        if (Input.GetKeyDown(KeyCode.Mouse0))
+        if (Input.GetKeyDown(KeyCode.Space))
         {
             _shooting = true;
             StartCoroutine(ShootCoroutine());
         }
-        if (Input.GetKeyUp(KeyCode.Mouse0))
+        if (Input.GetKeyUp(KeyCode.Space))
         {
             _shooting = false;
             StopCoroutine(ShootCoroutine());
         }
     }
+
+    public void MouseClick()
+    {
+        GameObject projectile = Instantiate(ShipInformation.Projectile, transform.position, transform.rotation);
+        projectile.transform.parent = null;
+        projectile.name = "Projectile";
+        projectile.GetComponent<Projectile>().GameController = GameController;
+        projectile.GetComponent<Projectile>()._firing_ship = gameObject;
+        _audioSource.PlayOneShot(ShipInformation.AudioClips[0]);
+        ShipInformation.Ammo--;
+    }
+
 
     void Reload()
     {
@@ -95,10 +110,20 @@ public class ShipController : MonoBehaviour
 
     void Move()
     {
+#if UNITY_EDITOR
+
         _horizontal = Input.GetAxis("Horizontal");
         _vertical = Input.GetAxis("Vertical");
 
-        if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.D))
+#endif
+
+#if UNITY_ANDROID
+
+        _horizontal=Joystick.Horizontal;
+        _vertical=Joystick.Vertical;
+#endif
+
+        if (_horizontal!=0|| _vertical!=0)
         {
             Vector3 normalizedVector = new Vector3(_horizontal, _vertical, 0).normalized;
             transform.position += normalizedVector * ShipInformation.MoveSpeed * Time.deltaTime;
@@ -119,5 +144,5 @@ public class ShipController : MonoBehaviour
         }
     }
 
-    #endregion
+#endregion
 }

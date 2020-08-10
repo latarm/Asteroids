@@ -12,11 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e608241a79aeb6149850e896fd9f5347, type: 3}
   m_Name: Level 2
   m_EditorClassIdentifier: 
-  LevelBackground: {fileID: 21300000, guid: 89bca327dbe7e6540bb158ab20a8bcc3, type: 3}
+  SkyBoxMaterial: {fileID: 2100000, guid: 939e9a2214e37ec4e8eb4fe85d074704, type: 2}
   LevelState: 0
   BackgroundMusic: {fileID: 8300000, guid: 9113a8a90b5a5ca42a7d9af05d6cf620, type: 3}
   PlayerPrefab: {fileID: 8896162970220074555, guid: 2b15c07f51fff4d4288abc085e464445,
     type: 3}
+  CurrentScore: 15
   WinScore: 15
   AsteroidsPrefabs:
   - {fileID: 4329056946036709611, guid: 1ec36e81a90af924094df5393f8418cb, type: 3}
