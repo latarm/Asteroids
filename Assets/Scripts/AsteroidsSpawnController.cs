@@ -4,7 +4,11 @@ public class AsteroidsSpawnController : MonoBehaviour
 {
     #region Fields
 
-    [SerializeField] private GameObject[] _asteroidsPrefabs;
+    private LevelData _levelData;
+
+    private GameController _gameController;
+
+    private GameObject[] _asteroidsPrefabs;
     private Transform _cameraTransform;
     private float _spawnDelay;
 
@@ -12,14 +16,22 @@ public class AsteroidsSpawnController : MonoBehaviour
 
     #region UnityMethods
 
-    private void Start()
+    public void Start()
     {
+        if (_gameController == null)
+        {
+            _gameController = GetComponent<GameController>();
+            _levelData = _gameController.LevelData;
+        }
+
+        _asteroidsPrefabs = _levelData.AsteroidsPrefabs;
+
         _spawnDelay = 2f;
         if (_cameraTransform == null)
             _cameraTransform = Camera.main.transform;
     }
 
-    void Update()
+    public void Update()
     {
         _spawnDelay -= Time.deltaTime;
         if (_spawnDelay <= 0)
@@ -33,11 +45,12 @@ public class AsteroidsSpawnController : MonoBehaviour
 
     #region Methods
 
-    private void Spawn(Vector3 spawnPosition)
+    private GameObject Spawn(Vector3 spawnPosition)
     {
-        GameObject asteroid = Instantiate(_asteroidsPrefabs[Random.Range(0, 6)], spawnPosition, Quaternion.identity);
+        GameObject asteroid = Instantiate(_asteroidsPrefabs[Random.Range(0, _asteroidsPrefabs.Length-1)], spawnPosition, Quaternion.identity);
         asteroid.name = "Asteroid";
         asteroid.transform.localScale *= Random.Range(1f, 1.5f);
+        return asteroid;
     }
 
     private Vector3 RandomSpawnPosition()

@@ -45,6 +45,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ea057a135c23d5242817a0b22ed358dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  AsteroidData: {fileID: 11400000, guid: 992fea5d83859aa4f8a00aaf5aed078e, type: 2}
   _minMoveSpeed: 1.5
   _maxMoveSpeed: 5
 --- !u!70 &6653721509272591471

@@ -1,13 +1,13 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class AsteroidController : MonoBehaviour
 {
     #region Fields
 
-    [SerializeField] private float _minMoveSpeed;
-    [SerializeField] private float _maxMoveSpeed;
+    private LevelData _levelData;
+
+    private GameController _gameController;
+
     private Transform _playerTransform;
     private Vector2 _playerPosition;
     private Vector2 _moveDirection;
@@ -20,10 +20,17 @@ public class AsteroidController : MonoBehaviour
 
     #region UnityMethods
 
-    void Start()
+    public void Start()
     {
+        if (_gameController == null)
+        {
+            _gameController = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
+            _levelData = _gameController.LevelData;
+        }
+
+
         if (_playerTransform == null)
-            _playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
+            _playerTransform = _gameController.Player.transform;
 
         if (_playerTransform != null)
         {
@@ -36,18 +43,18 @@ public class AsteroidController : MonoBehaviour
         _childTransform = transform.GetChild(0);
         _rotationSpeed = Random.Range(-3, 3);
 
-        _moveSpeed = Random.Range(_minMoveSpeed, _maxMoveSpeed);
-    } 
+        _moveSpeed = Random.Range(_levelData.AsteroidsMinMoveSpeed, _levelData.AsteroidsMaxMoveSpeed);
+    }
 
-    void Update()
+    public void Update()
     {
         Vector3 normalizedVector = _moveDirection;
         transform.position -= normalizedVector * _moveSpeed * Time.deltaTime;
 
-        if (transform.childCount==0)        
+        if (transform.childCount == 0)
             Destroy(gameObject);
 
-        if(_playerTransform!=null&&IsTargetFarThanDistance(_playerTransform.position,10f))
+        if (_playerTransform != null && IsTargetFarThanDistance(_playerTransform.position, 20f))
             Destroy(gameObject);
 
         _childTransform.Rotate(0, 0, _rotationSpeed);
