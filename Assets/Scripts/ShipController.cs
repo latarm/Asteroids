@@ -140,6 +140,7 @@ public class ShipController : MonoBehaviour
         _audioSource.PlayOneShot(ShipInformation.AudioClips[1]);
         if (ShipInformation.Lifes == 0)
         {
+
             Destroy(gameObject);
         }
     }

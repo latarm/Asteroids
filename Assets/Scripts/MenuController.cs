@@ -32,8 +32,6 @@ namespace SpeedTutorMainMenuSystem
         private void Start()
         {
             menuNumber = 1;
-
-           
         }
         #endregion
 

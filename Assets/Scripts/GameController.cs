@@ -26,11 +26,13 @@ public class GameController : MonoBehaviour
     private void Awake()
     {
         if (Player == null)
+        {
             Player = Instantiate(LevelData.PlayerPrefab, new Vector2(0, 0), Quaternion.identity);
-        Player.name = "Player ship";
-        _shipController = Player.GetComponent<ShipController>();
-        _shipController.GameController = this;
-        _shipController.Joystick = Joystick;
+            Player.name = "Player ship";
+            _shipController = Player.GetComponent<ShipController>();
+            _shipController.GameController = this;
+            _shipController.Joystick = Joystick;
+        }
        
         LevelData.CurrentScore = 0;
     }

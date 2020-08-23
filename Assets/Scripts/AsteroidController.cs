@@ -34,7 +34,7 @@ public class AsteroidController : MonoBehaviour
 
         if (_playerTransform != null)
         {
-            _playerPosition = new Vector2(_playerTransform.position.x, _playerTransform.position.y);
+            _playerPosition = _playerTransform.position;
             _moveDirection = new Vector2(transform.position.x - _playerPosition.x, transform.position.y - _playerPosition.y).normalized;
         }
 
