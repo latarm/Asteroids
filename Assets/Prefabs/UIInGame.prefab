@@ -824,8 +824,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_MethodName: MouseClick
+      - m_Target: {fileID: 3784364687874218037}
+        m_MethodName: ShipShoot
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1770,7 +1770,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 40e781590a15b9e4dbb3aab6854f6d60, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GameController: {fileID: 0}
+  WinDialog: {fileID: 97444967845422810}
+  _loseDialog: {fileID: 6929348086758189540}
+  Life: {fileID: 7961229642468854994}
+  AmmoAmount: {fileID: 7961229641138279969}
+  ScoreBar: {fileID: 7961229642378411514}
 --- !u!1 &9129207767923427376
 GameObject:
   m_ObjectHideFlags: 0

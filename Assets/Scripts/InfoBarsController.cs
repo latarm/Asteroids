@@ -6,15 +6,15 @@ public class InfoBarsController : MonoBehaviour
 {
     #region FIelds
 
-    private GameObject _winDialog;
-    private GameObject _loseDialog;
-    private LevelData _levelData;
-    private Image _lifesAmount;
-    private Text _ammoAmount;
-    private Text _scoreBar;
-    private Canvas _canvas;
-    private GameObject _shootButton;
+    public GameObject WinDialog;
+    public GameObject _loseDialog;
+    public Image Life;
+    public Text AmmoAmount;
+    public Text ScoreBar;
 
+    private GameObject _shootButton;
+    private LevelData _levelData;
+    
     #endregion
 
     #region UnityMethods
@@ -23,21 +23,21 @@ public class InfoBarsController : MonoBehaviour
     {
         _levelData = GameController.Instance.LevelData;       
 
-        if (_lifesAmount == null)
-            _lifesAmount = transform.Find("Life Bar").transform.Find("Mask").transform.Find("Life").GetComponent<Image>();
-        _lifesAmount.fillAmount = 0;
+        if (Life == null)
+            Life = transform.Find("Life Bar").transform.Find("Mask").transform.Find("Life").GetComponent<Image>();
+        Life.fillAmount = 0;
 
-        if(_ammoAmount==null)
-            _ammoAmount = transform.Find("Ammo Bar").transform.Find("Ammo amount").GetComponent<Text>();
-        _ammoAmount.text = ShipController.Instance.ShipInformation.Ammo.ToString();
+        if(AmmoAmount==null)
+            AmmoAmount = transform.Find("Ammo Bar").transform.Find("Ammo amount").GetComponent<Text>();
+        AmmoAmount.text = ShipController.Instance.ShipInformation.Ammo.ToString();
 
-        if (_scoreBar == null)
-            _scoreBar = transform.Find("Score Bar").GetComponent<Text>();
+        if (ScoreBar == null)
+            ScoreBar = transform.Find("Score Bar").GetComponent<Text>();
 
-        if (_winDialog == null)
+        if (WinDialog == null)
         {
-            _winDialog = transform.Find("Win").gameObject;
-            _winDialog.SetActive(false);
+            WinDialog = transform.Find("Win").gameObject;
+            WinDialog.SetActive(false);
         }
 
         if (_loseDialog == null)
@@ -46,31 +46,33 @@ public class InfoBarsController : MonoBehaviour
             _loseDialog.SetActive(false);
         }
 
-        _canvas = GetComponent<Canvas>();
-
-        _scoreBar.text = _levelData.CurrentScore.ToString();       
+        ScoreBar.text = _levelData.CurrentScore.ToString();       
     }
 
     private void Update()
     {
         CheckLife();
         CheckAmmo();
-        ChekScore();
+        CheсkScore();
     }
 
     #endregion
 
     #region Methods
 
-    void ChekScore()
+    public void ShipShoot()
+    {
+        ShipController.Instance.Shoot();
+    }
+
+    void CheсkScore()
     {
         if (_levelData.CurrentScore >= _levelData.WinScore)
         {
             _levelData.CurrentScore = _levelData.WinScore;
             _levelData.LevelState = LevelState.Complited;
             ShipController.Instance.gameObject.SetActive(false);
-            _canvas.sortingOrder = 2;
-            _winDialog.SetActive(true);
+            WinDialog.SetActive(true);
 
             for (int index = 1; index < GameController.Instance.GameData.LevelDatas.Length; index++)
             {
@@ -80,17 +82,17 @@ public class InfoBarsController : MonoBehaviour
                 }
             }
         }
-        _scoreBar.text = _levelData.CurrentScore.ToString()+"/"+_levelData.WinScore.ToString();
+        ScoreBar.text = _levelData.CurrentScore.ToString()+"/"+_levelData.WinScore.ToString();
     }
 
     void CheckAmmo()
     {
-        _ammoAmount.text = ShipController.Instance.ShipInformation.Ammo.ToString();
+        AmmoAmount.text = ShipController.Instance.ShipInformation.Ammo.ToString();
     }
 
     void CheckLife()
     {
-        _lifesAmount.fillAmount = (float)(ShipController.Instance.ShipInformation.MaxLife - ShipController.Instance.ShipInformation.Lifes) / ShipController.Instance.ShipInformation.MaxLife;
+        Life.fillAmount = (float)(ShipController.Instance.ShipInformation.MaxLife - ShipController.Instance.ShipInformation.Lifes) / ShipController.Instance.ShipInformation.MaxLife;
         if (ShipController.Instance.ShipInformation.Lifes == 0)
             _loseDialog.SetActive(true);
     }
@@ -102,7 +104,7 @@ public class InfoBarsController : MonoBehaviour
 
     public void LoadMainManu()
     {
-        SceneManager.LoadScene(0);
+        SceneManager.LoadScene("MainMenu");
     }
 
     public void LoadNextLevel()
