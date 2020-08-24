@@ -2,7 +2,7 @@
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
-public class InfoBarsController : MonoBehaviour
+public class InfoBarsController : Singleton<InfoBarsController>
 {
     #region FIelds
 
@@ -12,7 +12,6 @@ public class InfoBarsController : MonoBehaviour
     public Text AmmoAmount;
     public Text ScoreBar;
 
-    private GameObject _shootButton;
     private LevelData _levelData;
     
     #endregion
@@ -49,13 +48,6 @@ public class InfoBarsController : MonoBehaviour
         ScoreBar.text = _levelData.CurrentScore.ToString();       
     }
 
-    private void Update()
-    {
-        CheckLife();
-        CheckAmmo();
-        CheсkScore();
-    }
-
     #endregion
 
     #region Methods
@@ -65,7 +57,7 @@ public class InfoBarsController : MonoBehaviour
         ShipController.Instance.Shoot();
     }
 
-    void CheсkScore()
+    public void UpdateScore()
     {
         if (_levelData.CurrentScore >= _levelData.WinScore)
         {
@@ -85,12 +77,12 @@ public class InfoBarsController : MonoBehaviour
         ScoreBar.text = _levelData.CurrentScore.ToString()+"/"+_levelData.WinScore.ToString();
     }
 
-    void CheckAmmo()
+    public void UpdateAmmo()
     {
         AmmoAmount.text = ShipController.Instance.ShipInformation.Ammo.ToString();
     }
 
-    void CheckLife()
+    public void UpdateLife()
     {
         Life.fillAmount = (float)(ShipController.Instance.ShipInformation.MaxLife - ShipController.Instance.ShipInformation.Lifes) / ShipController.Instance.ShipInformation.MaxLife;
         if (ShipController.Instance.ShipInformation.Lifes == 0)

@@ -15,8 +15,6 @@ public class GameController : Singleton<GameController>
     public CinemachineVirtualCamera VirtualCamera;
 
     private GameObject _player;
-    private AsteroidsSpawnController _asteroidsSpawnController;
-    private ShipController _shipController;
     private AudioSource _audioSource;
 
     #endregion
@@ -50,14 +48,7 @@ public class GameController : Singleton<GameController>
 
         if (_player == null)
             _player = GameObject.FindGameObjectWithTag("Player");
-        _asteroidsSpawnController = GetComponent<AsteroidsSpawnController>();
     }    
-
-    void Update()
-    {
-        if (_player == null)
-            _asteroidsSpawnController.enabled = false;
-    }
 
     #endregion
 

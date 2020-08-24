@@ -32,6 +32,7 @@ public class Projectile : MonoBehaviour
         {
 			Instantiate(HitEffect, transform.position, Quaternion.identity);
             GameController.Instance.LevelData.CurrentScore++;
+            InfoBarsController.Instance.UpdateScore();
 			Destroy(gameObject);
             Destroy(col.gameObject);
 		}

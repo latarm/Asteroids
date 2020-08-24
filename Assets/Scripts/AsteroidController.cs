@@ -44,7 +44,7 @@ public class AsteroidController : MonoBehaviour
         if (transform.childCount == 0)
             Destroy(gameObject);
 
-        if (_playerTransform != null && IsTargetFarThanDistance(_playerTransform.position, 20f))
+        if (_playerTransform != null &&  Vector2.Distance(transform.position, _playerPosition)>20f)
             Destroy(gameObject);
 
         _childTransform.Rotate(0, 0, _rotationSpeed);
@@ -60,13 +60,4 @@ public class AsteroidController : MonoBehaviour
     }
 
     #endregion
-
-
-    bool IsTargetFarThanDistance(Vector2 targetPosition, float distance)
-    {
-        float x = (transform.position.x - targetPosition.x) * (transform.position.x - targetPosition.x);
-        float y = (transform.position.y - targetPosition.y) * (transform.position.y - targetPosition.y);
-
-        return distance * distance < x + y;
-    }
 }

@@ -10,7 +10,7 @@ public class ShipController : Singleton<ShipController>
     public Joystick Joystick;
 
     private float _horizontal, _vertical;
-    private bool _shooting=false;
+    private bool _isShooting=false;
     private Coroutine _reloadRoutine;
     private AudioSource _audioSource;
     
@@ -23,9 +23,14 @@ public class ShipController : Singleton<ShipController>
     {
         Joystick = GameController.Instance.Joystick;
 
-        gameObject.GetComponent<SpriteRenderer>().sprite = ShipInformation.ShipSprite;
         ShipInformation.Lifes = 3;
         ShipInformation.Score = 0;
+
+        InfoBarsController.Instance.UpdateLife();
+        InfoBarsController.Instance.UpdateAmmo();
+        InfoBarsController.Instance.UpdateScore();
+
+        gameObject.GetComponent<SpriteRenderer>().sprite = ShipInformation.ShipSprite;
         _audioSource = transform.GetComponent<AudioSource>();
     }
 
@@ -50,12 +55,12 @@ public class ShipController : Singleton<ShipController>
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            _shooting = true;
+            _isShooting = true;
             StartCoroutine(ShootRoutine());
         }
         if (Input.GetKeyUp(KeyCode.Space))
         {
-            _shooting = false;
+            _isShooting = false;
             StopCoroutine(ShootRoutine());
         }
     }
@@ -68,13 +73,14 @@ public class ShipController : Singleton<ShipController>
         projectile.GetComponent<Projectile>().FiringShip = gameObject;
         _audioSource.PlayOneShot(ShipInformation.AudioClips[0]);
         ShipInformation.Ammo--;
+        InfoBarsController.Instance.UpdateAmmo();
     }
 
     void Reload()
     {
-        if (!_shooting && _reloadRoutine == null && ShipInformation.Ammo < ShipInformation.MaxAmmo)
+        if (!_isShooting && _reloadRoutine == null && ShipInformation.Ammo < ShipInformation.MaxAmmo)
             _reloadRoutine= StartCoroutine(ReloadRoutine());
-        if(_reloadRoutine!=null && _shooting && ShipInformation.Ammo!=0)
+        if(_reloadRoutine!=null && _isShooting && ShipInformation.Ammo!=0)
         {
             StopCoroutine(_reloadRoutine);
             _reloadRoutine = null;
@@ -83,7 +89,7 @@ public class ShipController : Singleton<ShipController>
 
     IEnumerator ShootRoutine()
     {
-        while (_shooting&&ShipInformation.Ammo>0)
+        while (_isShooting&&ShipInformation.Ammo>0)
         {
             Shoot();
             yield return new WaitForSeconds(0.2f);
@@ -96,6 +102,7 @@ public class ShipController : Singleton<ShipController>
         {
             yield return new WaitForSeconds(0.3f);
             ShipInformation.Ammo++;
+            InfoBarsController.Instance.UpdateAmmo();
         }
         _reloadRoutine = null;
     }
@@ -129,6 +136,7 @@ public class ShipController : Singleton<ShipController>
     public void GetDamage(int damage)
     {
         ShipInformation.Lifes -= damage;
+        InfoBarsController.Instance.UpdateLife();
         _audioSource.PlayOneShot(ShipInformation.AudioClips[1]);
         if (ShipInformation.Lifes == 0)
         {
