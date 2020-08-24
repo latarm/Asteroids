@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Cinemachine;
 
-public class GameController : MonoBehaviour 
+public class GameController : Singleton<GameController> 
 {
 
     #region Fields
@@ -11,27 +11,27 @@ public class GameController : MonoBehaviour
     public GameData GameData;
     public LevelData LevelData;
     public Joystick Joystick;
-
-    public GameObject Player;
+    public GameObject PlayerPrefab;
     public CinemachineVirtualCamera VirtualCamera;
+
+    private GameObject _player;
     private AsteroidsSpawnController _asteroidsSpawnController;
     private ShipController _shipController;
     private AudioSource _audioSource;
-    private Transform _background;
 
     #endregion
 
     #region UnityMethods
 
-    private void Awake()
+    public override  void Awake()
     {
-        if (Player == null)
+        base.Awake();
+
+        if (_player == null)
         {
-            Player = Instantiate(LevelData.PlayerPrefab, new Vector2(0, 0), Quaternion.identity);
-            Player.name = "Player ship";
-            _shipController = Player.GetComponent<ShipController>();
-            _shipController.GameController = this;
-            _shipController.Joystick = Joystick;
+            _player = Instantiate(PlayerPrefab, new Vector2(0, 0), Quaternion.identity);
+            _player.name = "Player ship";
+            ShipController.Instance.Joystick = Joystick;
         }
        
         LevelData.CurrentScore = 0;
@@ -41,21 +41,21 @@ public class GameController : MonoBehaviour
     {
         if (VirtualCamera == null)
             VirtualCamera = FindObjectOfType<CinemachineVirtualCamera>();
-        VirtualCamera.Follow = Player.transform;
+        VirtualCamera.Follow = _player.transform;
         _audioSource = GetComponent<AudioSource>();
         _audioSource.clip = LevelData.BackgroundMusic;
         _audioSource.Play();
 
         RenderSettings.skybox = LevelData.SkyBoxMaterial;
 
-        if (Player == null)
-            Player = GameObject.FindGameObjectWithTag("Player");
+        if (_player == null)
+            _player = GameObject.FindGameObjectWithTag("Player");
         _asteroidsSpawnController = GetComponent<AsteroidsSpawnController>();
     }    
 
     void Update()
     {
-        if (Player == null)
+        if (_player == null)
             _asteroidsSpawnController.enabled = false;
     }
 

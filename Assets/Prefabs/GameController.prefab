@@ -60,6 +60,8 @@ MonoBehaviour:
   GameData: {fileID: 11400000, guid: b04f8707e1919824f99af4348a7ea5e5, type: 2}
   LevelData: {fileID: 11400000, guid: 52837f34779cfc0469a9f39a21aa0675, type: 2}
   Joystick: {fileID: 0}
+  PlayerPrefab: {fileID: 4409246299506267605, guid: 2b15c07f51fff4d4288abc085e464445,
+    type: 3}
   Player: {fileID: 0}
   VirtualCamera: {fileID: 0}
 --- !u!82 &6145989453960477264

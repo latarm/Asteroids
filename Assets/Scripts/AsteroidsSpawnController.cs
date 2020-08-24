@@ -5,9 +5,6 @@ public class AsteroidsSpawnController : MonoBehaviour
     #region Fields
 
     private LevelData _levelData;
-
-    private GameController _gameController;
-
     private GameObject[] _asteroidsPrefabs;
     private Transform _cameraTransform;
     private float _spawnDelay;
@@ -18,11 +15,7 @@ public class AsteroidsSpawnController : MonoBehaviour
 
     public void Start()
     {
-        if (_gameController == null)
-        {
-            _gameController = GetComponent<GameController>();
-            _levelData = _gameController.LevelData;
-        }
+        _levelData = GameController.Instance.LevelData;       
 
         _asteroidsPrefabs = _levelData.AsteroidsPrefabs;
 

@@ -6,14 +6,12 @@ public class AsteroidController : MonoBehaviour
 
     private LevelData _levelData;
 
-    private GameController _gameController;
-
     private Transform _playerTransform;
     private Vector2 _playerPosition;
     private Vector2 _moveDirection;
     private float _moveSpeed;
     private float _rotationSpeed;
-    private int _damage;
+    private readonly int _damage = 1;
     private Transform _childTransform;
 
     #endregion
@@ -22,23 +20,15 @@ public class AsteroidController : MonoBehaviour
 
     public void Start()
     {
-        if (_gameController == null)
-        {
-            _gameController = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
-            _levelData = _gameController.LevelData;
-        }
 
-
-        if (_playerTransform == null)
-            _playerTransform = _gameController.Player.transform;
+        _levelData = GameController.Instance.LevelData;
+        _playerTransform = ShipController.Instance.transform;
 
         if (_playerTransform != null)
         {
             _playerPosition = _playerTransform.position;
-            _moveDirection = new Vector2(transform.position.x - _playerPosition.x, transform.position.y - _playerPosition.y).normalized;
+            _moveDirection = new Vector2(transform.position.x - _playerPosition.x + Random.Range(-3f, 3f), transform.position.y - _playerPosition.y + Random.Range(-3f, 3f)).normalized;
         }
-
-        _damage = 1;
 
         _childTransform = transform.GetChild(0);
         _rotationSpeed = Random.Range(-3, 3);

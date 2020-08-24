@@ -1,126 +1,89 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-using UnityEngine.EventSystems;
 
-namespace SpeedTutorMainMenuSystem
+
+public class MenuController : MonoBehaviour
 {
-    public class MenuController : MonoBehaviour
+    [SerializeField] private GameData GameData;
+    [Space(20)]
+    [SerializeField] private GameObject _mainMenu;
+    [SerializeField] private GameObject _selectLevelMenu;
+    [Space(20)]
+    [SerializeField] private GameObject[] _levels;
+
+    private void Update()
     {
-        [SerializeField] private GameData GameData;
-
-        [Header("Levels To Load")]
-        public string _newGameButtonLevel;
-        private string levelToLoad;
-
-        private int menuNumber;
-
-        #region Menu Dialogs
-        [Header("Main Menu Components")]
-        [SerializeField] private GameObject MenuDefaultCanvas;
-        [SerializeField] private GameObject SelectLevelCanvas;
-        [Space(10)]
-        [Header("Levels")]
-        [SerializeField] private GameObject[] Levels;
-
-        #endregion
-
-        #region Initialisation - Button Selection & Menu Order
-
-        private void Start()
-        {
-            menuNumber = 1;
-        }
-        #endregion
-
-        private void Update()
-        {
-            if (Input.GetKeyDown(KeyCode.Escape))
-            {
-                if (menuNumber == 2 || menuNumber == 3|| menuNumber == 4 || menuNumber == 5)
-                {
-                    GoBackToMainMenu();
-                    ClickSound();
-                }
-            }           
-        }
-
-        private void ClickSound()
-        {
-            GetComponent<AudioSource>().Play();
-        }
-
-        #region Menu Mouse Clicks
-
-        public void MouseClick(string buttonType)
-        {
-            if (buttonType == "Select level")
-            {
-                MenuDefaultCanvas.SetActive(false);
-                SelectLevelCanvas.SetActive(true);
-                menuNumber = 2;
-
-                for (int index = 0; index < Levels.Length; index++)
-                {
-                    switch (GameData.LevelDatas[index].LevelState)
-                    {
-                        case LevelState.Close:
-                            {
-                                Levels[index].GetComponent<Button>().interactable = false;
-                                break;
-                            }
-                        case LevelState.Complited:
-                            {
-                                Levels[index].GetComponent<Button>().interactable = true;
-
-                                Levels[index].GetComponent<Text>().text += " (Complited)";
-                                break;
-                            }
-                        case LevelState.Open:
-                            {
-                                Levels[index].GetComponent<Button>().interactable = true;
-                                break;
-                            }
-                    }
-                }
-            }
-
-            if (buttonType == "Back")
-            {
-                SelectLevelCanvas.SetActive(false);
-                MenuDefaultCanvas.SetActive(true);
-                menuNumber = 3;
-            }
-
-            if (buttonType == "Exit")
-            {
-                Debug.Log("YES QUIT!");
-                Application.Quit();
-            }
-        }
-
-        public void LoadSelectedScene(int levelNumber)
-        {
-            SceneManager.LoadScene(levelNumber);
-        }
-
-        #endregion
-
-        #region Back to Menus
-
-        public void GoBackToMainMenu()
-        {
-            MenuDefaultCanvas.SetActive(true);
-            SelectLevelCanvas.SetActive(false);
-            menuNumber = 1;
-        }
-
-        public void ClickNoSaveDialog()
+        if (Input.GetKeyDown(KeyCode.Escape))
         {
             GoBackToMainMenu();
+            ClickSound();
         }
-        #endregion
+    }
+
+    private void ClickSound()
+    {
+        GetComponent<AudioSource>().Play();
+    }
+
+    public void MouseClick(string button)
+    {
+        switch (button)
+        {
+            case "Select level":
+                _mainMenu.SetActive(false);
+                _selectLevelMenu.SetActive(true);
+                UpdateLevelsMenu();
+                break;
+
+            case "Back":
+                _selectLevelMenu.SetActive(false);
+                _mainMenu.SetActive(true);
+                break;
+
+            case "Exit":
+                Application.Quit();
+                break;
+
+        }
+    }
+
+    void UpdateLevelsMenu()
+    {
+        for (int index = 0; index < _levels.Length; index++)
+        {
+            switch (GameData.LevelDatas[index].LevelState)
+            {
+                case LevelState.Close:
+                    {
+                        _levels[index].GetComponent<Button>().interactable = false;
+                        break;
+                    }
+                case LevelState.Complited:
+                    {
+                        _levels[index].GetComponent<Button>().interactable = true;
+
+                        _levels[index].GetComponent<Text>().text = GameData.LevelDatas[index].name + " (Complited)";
+                        break;
+                    }
+                case LevelState.Open:
+                    {
+                        _levels[index].GetComponent<Button>().interactable = true;
+                        break;
+                    }
+            }
+        }
+    }
+
+    public void LoadSelectedScene(int levelNumber)
+    {
+        SceneManager.LoadScene(levelNumber);
+    }
+
+    public void GoBackToMainMenu()
+    {
+        _mainMenu.SetActive(true);
+        _selectLevelMenu.SetActive(false);
     }
 }
+

@@ -6,14 +6,9 @@ public class InfoBarsController : MonoBehaviour
 {
     #region FIelds
 
-    public GameController GameController;
-
-    private GameObject _player;
     private GameObject _winDialog;
     private GameObject _loseDialog;
-    private ShipController _shipController;
     private LevelData _levelData;
-
     private Image _lifesAmount;
     private Text _ammoAmount;
     private Text _scoreBar;
@@ -26,19 +21,7 @@ public class InfoBarsController : MonoBehaviour
 
     void Start()
     {
-        if (GameController == null)
-        {
-            GameController = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
-            _levelData = GameController.LevelData;
-            _player = GameController.Player;
-            _shipController = _player.GetComponent<ShipController>();
-        }
-
-        if (_lifesAmount == null)
-        {
-            _shootButton = transform.Find("ShootButton").gameObject;
-        }
-
+        _levelData = GameController.Instance.LevelData;       
 
         if (_lifesAmount == null)
             _lifesAmount = transform.Find("Life Bar").transform.Find("Mask").transform.Find("Life").GetComponent<Image>();
@@ -46,7 +29,7 @@ public class InfoBarsController : MonoBehaviour
 
         if(_ammoAmount==null)
             _ammoAmount = transform.Find("Ammo Bar").transform.Find("Ammo amount").GetComponent<Text>();
-        _ammoAmount.text = _shipController.ShipInformation.Ammo.ToString();
+        _ammoAmount.text = ShipController.Instance.ShipInformation.Ammo.ToString();
 
         if (_scoreBar == null)
             _scoreBar = transform.Find("Score Bar").GetComponent<Text>();
@@ -65,9 +48,7 @@ public class InfoBarsController : MonoBehaviour
 
         _canvas = GetComponent<Canvas>();
 
-        _scoreBar.text = _levelData.CurrentScore.ToString();
-
-        
+        _scoreBar.text = _levelData.CurrentScore.ToString();       
     }
 
     private void Update()
@@ -87,15 +68,15 @@ public class InfoBarsController : MonoBehaviour
         {
             _levelData.CurrentScore = _levelData.WinScore;
             _levelData.LevelState = LevelState.Complited;
-            _player.SetActive(false);
+            ShipController.Instance.gameObject.SetActive(false);
             _canvas.sortingOrder = 2;
             _winDialog.SetActive(true);
 
-            for (int index = 1; index < GameController.GameData.LevelDatas.Length; index++)
+            for (int index = 1; index < GameController.Instance.GameData.LevelDatas.Length; index++)
             {
-                if (GameController.GameData.LevelDatas[index - 1].LevelState == LevelState.Complited && GameController.GameData.LevelDatas[index].LevelState == LevelState.Close)
+                if (GameController.Instance.GameData.LevelDatas[index - 1].LevelState == LevelState.Complited && GameController.Instance.GameData.LevelDatas[index].LevelState == LevelState.Close)
                 {
-                    GameController.GameData.LevelDatas[index].LevelState = LevelState.Open;
+                    GameController.Instance.GameData.LevelDatas[index].LevelState = LevelState.Open;
                 }
             }
         }
@@ -104,13 +85,13 @@ public class InfoBarsController : MonoBehaviour
 
     void CheckAmmo()
     {
-        _ammoAmount.text = _shipController.ShipInformation.Ammo.ToString();
+        _ammoAmount.text = ShipController.Instance.ShipInformation.Ammo.ToString();
     }
 
     void CheckLife()
     {
-        _lifesAmount.fillAmount = (float)(_shipController.ShipInformation.MaxLife - _shipController.ShipInformation.Lifes) / _shipController.ShipInformation.MaxLife;
-        if (_shipController.ShipInformation.Lifes == 0)
+        _lifesAmount.fillAmount = (float)(ShipController.Instance.ShipInformation.MaxLife - ShipController.Instance.ShipInformation.Lifes) / ShipController.Instance.ShipInformation.MaxLife;
+        if (ShipController.Instance.ShipInformation.Lifes == 0)
             _loseDialog.SetActive(true);
     }
 

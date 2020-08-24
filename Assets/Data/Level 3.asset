@@ -15,9 +15,9 @@ MonoBehaviour:
   SkyBoxMaterial: {fileID: 2100000, guid: 2d59d810ba900874295015e507e19f2e, type: 2}
   LevelState: 0
   BackgroundMusic: {fileID: 8300000, guid: 816b6eab58d24c646a55f35fb63b0f1f, type: 3}
-  PlayerPrefab: {fileID: 8896162970220074555, guid: 2b15c07f51fff4d4288abc085e464445,
+  PlayerPrefab: {fileID: 4409246299506267605, guid: 2b15c07f51fff4d4288abc085e464445,
     type: 3}
-  CurrentScore: 20
+  CurrentScore: 0
   WinScore: 20
   AsteroidsPrefabs:
   - {fileID: 4329056946036709611, guid: 1ec36e81a90af924094df5393f8418cb, type: 3}
