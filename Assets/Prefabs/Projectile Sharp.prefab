@@ -47,10 +47,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 304f3693f902a6540be5ae2c4a6f0957, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shoot_effect: {fileID: 100002, guid: 565cdc2ed7b030a41accd8f00ae59a50, type: 3}
-  hit_effect: {fileID: 100002, guid: cafecd3fc3b761c45bb1553f35cf5c96, type: 3}
-  _firing_ship: {fileID: 0}
-  _moveSpeed: 5
+  ShootEffect: {fileID: 100002, guid: 565cdc2ed7b030a41accd8f00ae59a50, type: 3}
+  HitEffect: {fileID: 100002, guid: cafecd3fc3b761c45bb1553f35cf5c96, type: 3}
+  FiringShip: {fileID: 0}
+  MoveSpeed: 5
 --- !u!212 &21200000
 SpriteRenderer:
   m_ObjectHideFlags: 0

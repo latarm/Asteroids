@@ -60,6 +60,16 @@ public class ShipController : Singleton<ShipController>
         }
     }
 
+    public void Shoot()
+    {
+        GameObject projectile = Instantiate(ShipInformation.Projectile, transform.position, transform.rotation);
+        projectile.transform.parent = null;
+        projectile.name = "Projectile";
+        projectile.GetComponent<Projectile>().FiringShip = gameObject;
+        _audioSource.PlayOneShot(ShipInformation.AudioClips[0]);
+        ShipInformation.Ammo--;
+    }
+
     void Reload()
     {
         if (!_shooting && _reloadRoutine == null && ShipInformation.Ammo < ShipInformation.MaxAmmo)
@@ -75,12 +85,7 @@ public class ShipController : Singleton<ShipController>
     {
         while (_shooting&&ShipInformation.Ammo>0)
         {
-            GameObject projectile = Instantiate(ShipInformation.Projectile, transform.position, transform.rotation);
-            projectile.transform.parent = null;
-            projectile.name = "Projectile";
-            projectile.GetComponent<Projectile>()._firing_ship = gameObject;
-            _audioSource.PlayOneShot(ShipInformation.AudioClips[0]);
-            ShipInformation.Ammo--;
+            Shoot();
             yield return new WaitForSeconds(0.2f);
         }
     }

@@ -5,13 +5,10 @@ public class Projectile : MonoBehaviour
 {
     #region Fields
 
-    public GameController GameController;
-
-    public GameObject shoot_effect;
-	public GameObject hit_effect;
-    public GameObject _firing_ship;
-    private ShipController _shipController;
-    public float _moveSpeed;
+    public GameObject ShootEffect;
+	public GameObject HitEffect;
+    public GameObject FiringShip;
+    public float MoveSpeed;
 
     #endregion
 
@@ -19,22 +16,21 @@ public class Projectile : MonoBehaviour
 
     void Start ()
     {
-        _shipController = _firing_ship.GetComponent<ShipController>();
-		GameObject obj = Instantiate(shoot_effect, transform.position  - new Vector3(0,0,5), Quaternion.identity); //Spawn muzzle flash
-		obj.transform.parent = _firing_ship.transform;
+		GameObject obj = Instantiate(ShootEffect, transform.position  - new Vector3(0,0,5), Quaternion.identity); //Spawn muzzle flash
+		obj.transform.parent = FiringShip.transform;
 		Destroy(gameObject, 5f);    
 	}
 
     void Update()
     {
-        transform.Translate(Vector3.up * _moveSpeed * Time.deltaTime, Space.Self);
+        transform.Translate(Vector3.up * MoveSpeed * Time.deltaTime, Space.Self);
     }
 	
 	void OnTriggerEnter2D(Collider2D col)
     {		
-		if (col.gameObject != _firing_ship && col.gameObject.tag != "Projectile")
+		if (col.gameObject != FiringShip && col.gameObject.tag != "Projectile")
         {
-			Instantiate(hit_effect, transform.position, Quaternion.identity);
+			Instantiate(HitEffect, transform.position, Quaternion.identity);
             GameController.Instance.LevelData.CurrentScore++;
 			Destroy(gameObject);
             Destroy(col.gameObject);
@@ -45,6 +41,8 @@ public class Projectile : MonoBehaviour
     {
         Destroy(gameObject);
     }
+
+
 
     #endregion
 }
