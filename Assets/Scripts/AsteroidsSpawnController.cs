@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 
 public class AsteroidsSpawnController : MonoBehaviour
 {
@@ -7,7 +8,6 @@ public class AsteroidsSpawnController : MonoBehaviour
     private LevelData _levelData;
     private GameObject[] _asteroidsPrefabs;
     private Transform _cameraTransform;
-    private float _spawnDelay;
 
     #endregion
 
@@ -19,31 +19,27 @@ public class AsteroidsSpawnController : MonoBehaviour
 
         _asteroidsPrefabs = _levelData.AsteroidsPrefabs;
 
-        _spawnDelay = 2f;
         if (_cameraTransform == null)
             _cameraTransform = Camera.main.transform;
-    }
 
-    public void Update()
-    {
-        _spawnDelay -= Time.deltaTime;
-        if (_spawnDelay <= 0)
-        {
-            Spawn(RandomSpawnPosition());
-            _spawnDelay = Random.Range(0.5f, 1.5f);
-        }
+        StartCoroutine(SpawnRoutine());
     }
 
     #endregion
 
     #region Methods
 
-    private GameObject Spawn(Vector3 spawnPosition)
+    private IEnumerator SpawnRoutine()
     {
-        GameObject asteroid = Instantiate(_asteroidsPrefabs[Random.Range(0, _asteroidsPrefabs.Length-1)], spawnPosition, Quaternion.identity);
-        asteroid.name = "Asteroid";
-        asteroid.transform.localScale *= Random.Range(1f, 1.5f);
-        return asteroid;
+        while(ShipController.Instance.enabled)
+        {
+            GameObject asteroid = Instantiate(_asteroidsPrefabs[Random.Range(0, _asteroidsPrefabs.Length - 1)], RandomSpawnPosition(), Quaternion.identity);
+            asteroid.name = "Asteroid";
+            asteroid.transform.localScale *= Random.Range(1f, 1.5f);
+
+            yield return new WaitForSeconds(Random.Range(0.5f, 1.5f));
+        }
+        yield return null;
     }
 
     private Vector3 RandomSpawnPosition()
