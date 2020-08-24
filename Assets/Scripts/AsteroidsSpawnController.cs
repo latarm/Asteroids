@@ -5,7 +5,6 @@ public class AsteroidsSpawnController : MonoBehaviour
 {
     #region Fields
 
-    private LevelData _levelData;
     private GameObject[] _asteroidsPrefabs;
     private Transform _cameraTransform;
 
@@ -15,9 +14,7 @@ public class AsteroidsSpawnController : MonoBehaviour
 
     public void Start()
     {
-        _levelData = GameController.Instance.LevelData;       
-
-        _asteroidsPrefabs = _levelData.AsteroidsPrefabs;
+        _asteroidsPrefabs = GameController.Instance.LevelData.AsteroidsPrefabs;
 
         if (_cameraTransform == null)
             _cameraTransform = Camera.main.transform;

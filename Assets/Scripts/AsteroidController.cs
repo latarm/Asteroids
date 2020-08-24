@@ -38,8 +38,7 @@ public class AsteroidController : MonoBehaviour
 
     public void Update()
     {
-        Vector3 normalizedVector = _moveDirection;
-        transform.position -= normalizedVector * _moveSpeed * Time.deltaTime;
+        transform.position -= new Vector3(_moveDirection.x, _moveDirection.y) * _moveSpeed * Time.deltaTime;
 
         if (transform.childCount == 0)
             Destroy(gameObject);
