@@ -108,12 +108,11 @@ public class InfoBarsController : MonoBehaviour
     public void LoadNextLevel()
     {
         int nextLevel = SceneManager.GetActiveScene().buildIndex + 1;
-        SceneManager.LoadScene(2);
 
-        //if (nextLevel <= SceneManager.sceneCountInBuildSettings - 1)
-        //    SceneManager.LoadScene(nextLevel);
-        //else
-        //    SceneManager.LoadScene("MainMenu");
+        if (nextLevel+1 == SceneManager.sceneCountInBuildSettings)
+            SceneManager.LoadScene(nextLevel);
+        else
+            SceneManager.LoadScene("MainMenu");
     }
 
 
