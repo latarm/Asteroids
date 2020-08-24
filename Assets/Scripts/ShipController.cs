@@ -1,13 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class ShipController : MonoBehaviour
+public class ShipController : Singleton<ShipController>
 {
     #region Fields
 
     public ShipData ShipInformation;
-
-    public GameController GameController;
 
     public Joystick Joystick;
 
@@ -23,6 +21,8 @@ public class ShipController : MonoBehaviour
 
     public void Start()
     {
+        Joystick = GameController.Instance.Joystick;
+
         gameObject.GetComponent<SpriteRenderer>().sprite = ShipInformation.ShipSprite;
         ShipInformation.Lifes = 3;
         ShipInformation.Score = 0;
@@ -32,7 +32,7 @@ public class ShipController : MonoBehaviour
     public void Update()
     {
         Move();
-        Shoot();
+        Shooting();
         Reload();
 
         if (ShipInformation.Lifes > ShipInformation.MaxLife)
@@ -46,36 +46,24 @@ public class ShipController : MonoBehaviour
 
     #region Methods
 
-    void Shoot()
+    void Shooting()
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
             _shooting = true;
-            StartCoroutine(ShootCoroutine());
+            StartCoroutine(ShootRoutine());
         }
         if (Input.GetKeyUp(KeyCode.Space))
         {
             _shooting = false;
-            StopCoroutine(ShootCoroutine());
+            StopCoroutine(ShootRoutine());
         }
     }
-
-    public void MouseClick()
-    {
-        GameObject projectile = Instantiate(ShipInformation.Projectile, transform.position, transform.rotation);
-        projectile.transform.parent = null;
-        projectile.name = "Projectile";
-        projectile.GetComponent<Projectile>().GameController = GameController;
-        projectile.GetComponent<Projectile>()._firing_ship = gameObject;
-        _audioSource.PlayOneShot(ShipInformation.AudioClips[0]);
-        ShipInformation.Ammo--;
-    }
-
 
     void Reload()
     {
         if (!_shooting && _reloadRoutine == null && ShipInformation.Ammo < ShipInformation.MaxAmmo)
-            _reloadRoutine= StartCoroutine(ReloadCoroutine());
+            _reloadRoutine= StartCoroutine(ReloadRoutine());
         if(_reloadRoutine!=null && _shooting && ShipInformation.Ammo!=0)
         {
             StopCoroutine(_reloadRoutine);
@@ -83,14 +71,13 @@ public class ShipController : MonoBehaviour
         }
     }
 
-    IEnumerator ShootCoroutine()
+    IEnumerator ShootRoutine()
     {
         while (_shooting&&ShipInformation.Ammo>0)
         {
             GameObject projectile = Instantiate(ShipInformation.Projectile, transform.position, transform.rotation);
             projectile.transform.parent = null;
             projectile.name = "Projectile";
-            projectile.GetComponent<Projectile>().GameController = GameController;
             projectile.GetComponent<Projectile>()._firing_ship = gameObject;
             _audioSource.PlayOneShot(ShipInformation.AudioClips[0]);
             ShipInformation.Ammo--;
@@ -98,7 +85,7 @@ public class ShipController : MonoBehaviour
         }
     }
 
-    IEnumerator ReloadCoroutine()
+    IEnumerator ReloadRoutine()
     {
         while (ShipInformation.Ammo < ShipInformation.MaxAmmo)
         {
@@ -140,8 +127,7 @@ public class ShipController : MonoBehaviour
         _audioSource.PlayOneShot(ShipInformation.AudioClips[1]);
         if (ShipInformation.Lifes == 0)
         {
-
-            Destroy(gameObject);
+            gameObject.SetActive(false);
         }
     }
 

@@ -35,7 +35,7 @@ public class Projectile : MonoBehaviour
 		if (col.gameObject != _firing_ship && col.gameObject.tag != "Projectile")
         {
 			Instantiate(hit_effect, transform.position, Quaternion.identity);
-            GameController.LevelData.CurrentScore++;
+            GameController.Instance.LevelData.CurrentScore++;
 			Destroy(gameObject);
             Destroy(col.gameObject);
 		}
